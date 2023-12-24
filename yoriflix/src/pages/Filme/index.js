@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import './filme-info.css';
 import api from "../../services/api";
+import { toast } from 'react-toastify';
+
 
 function Filme() {
     const { id } = useParams();
@@ -50,13 +52,13 @@ function Filme() {
         const hasFilme = filmesSalvos.some((filmesSalvo) => filmesSalvo.id === filme.id)
 
         if(hasFilme){
-            alert("Esse filme já está na lista de salvos");
+            toast.warn("Esse filme já está na lista de salvos");
             return;
         }
 
         filmesSalvos.push(filme);
         localStorage.setItem('@yoriflix', JSON.stringify(filmesSalvos));
-        alert("Filme salvo com sucesso!")
+        toast.success("Filme salvo com sucesso")
     }
 
     if (loading) {
