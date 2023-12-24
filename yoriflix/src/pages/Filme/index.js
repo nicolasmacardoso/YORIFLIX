@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
+import './filme-info.css';
 import api from "../../services/api";
 
 function Filme() {
     const { id } = useParams();
     const [filme, setFilme] = useState({});
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        let loadingTimeout;
+
+        loadingTimeout = setTimeout(() => {
+            setLoading(true);
+        }, 200);
+
         async function loadFilme() {
             await api.get(`/movie/${id}`, {
                 params: {
@@ -17,6 +23,7 @@ function Filme() {
                 }
             })
             .then((response)=> {
+                clearTimeout(loadingTimeout);
                 setFilme(response.data);
                 setLoading(false);
             })
@@ -47,8 +54,17 @@ function Filme() {
             
             <h3>Sinopse</h3>
             <span>{filme.overview}</span>
-
             <strong>Avaliação: {filme.vote_average} / 10</strong>
+
+            <div className="area-buttons">
+                <button>Salvar</button>
+                <a href="#">
+                    <button>
+                            Trailer
+                    </button>
+                </a>
+            </div>
+
         </div>
     )
 }
